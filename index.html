@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SADATI - Sekretariat DPRD Padang Pariaman</title>
+    <style>
+        :root {
+            --primary-color: #0b3c5d;
+            --secondary-color: #328cc1;
+            --accent-color: #d9b310;
+            --bg-color: #f4f7f6;
+            --text-color: #1d2731;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .welcome-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .btn-masuk {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(50, 140, 193, 0.3);
+            border-bottom: 3px solid #1d6e9b;
+        }
+
+        .btn-masuk:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(11, 60, 93, 0.4);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 4rem;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SADATI</h1>
+        <p>Sistem Administrasi Dinas Luar Terintegrasi</p>
+        <p style="font-size: 0.9rem; margin-top: 5px; font-weight: 300;">Sekretariat DPRD Kabupaten Padang Pariaman</p>
+    </header>
+
+    <div class="container">
+        <div class="welcome-card">
+            <h2>Selamat Datang di Portal SADATI</h2>
+            <p>Sistem ini digunakan untuk melakukan penomoran otomatis Surat Perintah Tugas (SPT) dan Surat Perintah Perjalanan Dinas (SPPD) di lingkungan Sekretariat dan Dewan Perwakilan Rakyat Daerah Kabupaten Padang Pariaman secara mandiri, akurat, dan cepat.</p>
+            <br>
+            <!-- GANTI LINK DI BAWAH INI DENGAN BROWSER LINK APPSHEET ANDA -->
+            <a href="TEMPEL_BROWSER_LINK_APPSHEET_DI_SINI" target="_blank" class="btn-masuk">
+                BUKA APLIKASI SADATI &rarr;
+            </a>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🚀 Cepat & Akurat</h3>
+                <p>Nomor SPT dan SPPD dibuat langsung oleh sistem secara real-time berdasarkan tanggal surat, menghindari duplikasi nomor atau nomor lompat.</p>
+            </div>
+            <div class="info-card">
+                <h3>🔒 Akses Internal</h3>
+                <p>Aplikasi dapat diakses oleh seluruh aparatur dan staf di lingkungan kantor Sekretariat DPRD Kabupaten Padang Pariaman.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Sekretariat DPRD Kabupaten Padang Pariaman. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
