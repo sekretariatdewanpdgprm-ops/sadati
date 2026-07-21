@@ -11,7 +11,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .card-container {
-      max-width: 650px;
+      max-width: 600px;
       margin: 40px auto;
       background: #ffffff;
       border-radius: 12px;
@@ -50,7 +50,6 @@
       background: #ffffff;
       margin: 10px 0;
     }
-    /* Style khusus saat cetak A4 */
     @media print {
       body * {
         visibility: hidden;
@@ -70,18 +69,49 @@
 <body>
 
 <div class="container">
-  <div class="card-container">
+  
+  <!-- ================= FORM LOGIN ================= -->
+  <div id="loginCard" class="card-container">
     <div class="text-center mb-4">
-      <h4 class="header-title mb-1">Penomoran SPT Sekretariat</h4>
+      <h4 class="header-title mb-1">Login SADATI</h4>
       <p class="text-muted small">Sekretariat DPRD Kabupaten Padang Pariaman</p>
       <hr>
     </div>
 
+    <div id="loginAlert" class="alert alert-danger d-none" role="alert"></div>
+
+    <form id="loginForm">
+      <div class="mb-3">
+        <label for="loginNip" class="form-label fw-bold">NIP Pegawai</label>
+        <input type="text" id="loginNip" class="form-control" placeholder="Masukkan 18 digit NIP..." required>
+      </div>
+      <div class="mb-3">
+        <label for="loginPassword" class="form-label fw-bold">Password</label>
+        <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password..." required>
+      </div>
+      <button type="submit" id="btnLogin" class="btn btn-primary-custom w-100 mt-2">
+        Masuk Aplikasi
+      </button>
+    </form>
+  </div>
+
+
+  <!-- ================= FORM PENOMORAN SPT (HIDDEN DEFAULT) ================= -->
+  <div id="sptCard" class="card-container d-none">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h5 class="header-title mb-0">Penomoran SPT</h5>
+        <small class="text-muted">SADATI Setwan DPRD</small>
+      </div>
+      <button onclick="logout()" class="btn btn-outline-danger btn-sm fw-bold">Logout</button>
+    </div>
+    <hr class="mt-0">
+
     <form id="sptForm">
-      <!-- Petugas / Nama Pegawai -->
+      <!-- Petugas Auto-filled -->
       <div class="mb-3">
         <label for="petugas" class="form-label fw-bold">Petugas / Pelaksana Tugas</label>
-        <input type="text" id="petugas" class="form-control bg-light" value="Drs., ARMEYN RKT ,M.Si (196811111992031006)" readonly>
+        <input type="text" id="petugas" class="form-control bg-light" readonly>
       </div>
 
       <!-- Tanggal Berangkat & Tanggal Kembali -->
@@ -99,7 +129,7 @@
       <!-- Maksud Perjalanan Dinas -->
       <div class="mb-3">
         <label for="maksud" class="form-label fw-bold">Maksud Perjalanan Dinas / Agenda</label>
-        <textarea id="maksud" class="form-control" rows="3" placeholder="Masukkan agenda kegiatan dinas..." required></textarea>
+        <textarea id="maksud" class="form-control" rows="3" placeholder="Contoh: Dalam rangka konsultasi dan koordinasi..." required></textarea>
       </div>
 
       <!-- Tujuan Perjalanan Dinas -->
@@ -114,12 +144,12 @@
       </button>
     </form>
 
-    <!-- Output Hasil Penomoran -->
+    <!-- Hasil Penomoran -->
     <div id="resultBox" class="result-box text-center d-none">
       <h6 class="text-success fw-bold mb-1">Nomor Berhasil Diregistrasi!</h6>
       <small class="text-muted">Nomor Surat Perintah Tugas Resmi</small>
 
-      <div id="displayNomor" class="nomor-spt">800.1.11.1/2/SET-DPRD/2026</div>
+      <div id="displayNomor" class="nomor-spt"></div>
 
       <p class="small text-muted mb-3">Waktu Input: <span id="displayWaktu"></span></p>
 
@@ -128,9 +158,10 @@
       </button>
     </div>
   </div>
+
 </div>
 
-<!-- Area khusus Cetak PDF/A4 (Hidden secara default) -->
+<!-- AREA BUKTI CETAK A4 -->
 <div id="printArea" class="d-none p-5">
   <div class="text-center mb-4">
     <h3 class="fw-bold mb-1">SEKRETARIAT DPRD KABUPATEN PADANG PARIAMAN</h3>
@@ -159,7 +190,7 @@
       <td id="pTujuan"></td>
     </tr>
     <tr>
-      <th>Waktu Registrasi System</th>
+      <th>Waktu Registrasi</th>
       <td id="pWaktu"></td>
     </tr>
   </table>
@@ -175,20 +206,59 @@
 </div>
 
 <script>
-  // Ganti URL ini dengan Web App URL dari Google Apps Script Anda
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby10NOtNauJqMF_XyZVihDZPQn-UGa-1shicEQwDKCNbjEeFr4D7YZtkuLQQbDMMQbI/exec";
+  // URL Web App Google Apps Script Anda
+  const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 
-  const form = document.getElementById('sptForm');
-  const resultBox = document.getElementById('resultBox');
-
-  // Set default tanggal hari ini
+  // Set Tanggal Hari ini
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('tglBerangkat').value = today;
   document.getElementById('tglKembali').value = today;
 
-  form.addEventListener('submit', function(e) {
+  // --- PROSES LOGIN ---
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
+    const nip = document.getElementById('loginNip').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const btnLogin = document.getElementById('btnLogin');
+    const loginAlert = document.getElementById('loginAlert');
+
+    btnLogin.disabled = true;
+    btnLogin.innerText = "Memverifikasi...";
+    loginAlert.classList.add('d-none');
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'login', nip: nip, password: password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      btnLogin.disabled = false;
+      btnLogin.innerText = "Masuk Aplikasi";
+
+      if (data.status === 'success') {
+        // Tampilkan Form SPT & Isi Nama Pegawai
+        document.getElementById('loginCard').classList.add('d-none');
+        document.getElementById('sptCard').classList.remove('d-none');
+        document.getElementById('petugas').value = `${data.nama} (${data.nip})`;
+      } else {
+        loginAlert.innerText = data.message || "NIP atau Password salah!";
+        loginAlert.classList.remove('d-none');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      btnLogin.disabled = false;
+      btnLogin.innerText = "Masuk Aplikasi";
+      loginAlert.innerText = "Gagal terhubung ke server.";
+      loginAlert.classList.remove('d-none');
+    });
+  });
+
+  // --- PROSES SUBMIT SPT ---
+  document.getElementById('sptForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
     const tglAwal = new Date(document.getElementById('tglBerangkat').value);
     const tglAkhir = new Date(document.getElementById('tglKembali').value);
 
@@ -205,6 +275,7 @@
     const waktuFormat = now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID');
 
     const payload = {
+      action: 'generateSPT',
       petugas: document.getElementById('petugas').value,
       tglBerangkat: document.getElementById('tglBerangkat').value,
       tglKembali: document.getElementById('tglKembali').value,
@@ -213,7 +284,6 @@
       waktuInput: waktuFormat
     };
 
-    // Kirim data ke Google Apps Script
     fetch(SCRIPT_URL, {
       method: 'POST',
       body: JSON.stringify(payload)
@@ -223,12 +293,11 @@
       btnSubmit.disabled = false;
       btnSubmit.innerText = "Generate Nomor SPT Resmi";
 
-      // Tampilkan hasil
       document.getElementById('displayNomor').innerText = data.nomorSPT;
       document.getElementById('displayWaktu').innerText = waktuFormat;
-      resultBox.classList.remove('d-none');
+      document.getElementById('resultBox').classList.remove('d-none');
 
-      // Siapkan data cetak
+      // Data Cetak
       document.getElementById('pNomor').innerText = data.nomorSPT;
       document.getElementById('pPetugas').innerText = payload.petugas;
       document.getElementById('pTglBerangkat').innerText = payload.tglBerangkat;
@@ -242,9 +311,16 @@
       console.error(err);
       btnSubmit.disabled = false;
       btnSubmit.innerText = "Generate Nomor SPT Resmi";
-      alert("Terjadi kesalahan saat menyimpan data ke server.");
+      alert("Terjadi kesalahan saat menyimpan SPT.");
     });
   });
+
+  function logout() {
+    document.getElementById('sptCard').classList.add('d-none');
+    document.getElementById('loginCard').classList.remove('d-none');
+    document.getElementById('loginForm').reset();
+    document.getElementById('resultBox').classList.add('d-none');
+  }
 
   function cetakBukti() {
     const printArea = document.getElementById('printArea');
