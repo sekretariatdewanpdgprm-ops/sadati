@@ -3,148 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SADATI - SPT Sekretariat DPRD</title>
+    <title>SADATI - Penomoran SPT Sekretariat DPRD</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f5; margin: 0; padding: 20px; }
-        .card { max-width: 550px; margin: 30px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .header-title { text-align: center; color: #003366; border-bottom: 2px solid #003366; padding-bottom: 10px; margin-bottom: 20px; }
-        .header-title h2 { margin: 0; font-size: 22px; }
-        .header-title p { margin: 5px 0 0; font-size: 13px; color: #555; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: #333; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-        button { width: 100%; padding: 12px; background: #003366; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:hover { background: #002244; }
-        .hidden { display: none; }
-        .success-box { background: #e8f8f5; border: 1px solid #2ecc71; padding: 20px; border-radius: 8px; margin-top: 20px; }
-        .no-spt { font-size: 20px; font-weight: bold; color: #d35400; background: #fff; padding: 10px; border-radius: 5px; border: 1px dashed #d35400; text-align: center; margin: 10px 0; }
-        .user-info { background: #e9f2fe; padding: 10px; border-radius: 6px; font-size: 14px; margin-bottom: 15px; border-left: 4px solid #003366; }
+        :root {
+            --primary-color: #003366;
+            --primary-hover: #002244;
+            --bg-color: #eef2f5;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .card {
+            max-width: 520px;
+            margin: 30px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-title {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .header-title h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .user-badge {
+            background-color: #e9f2fe;
+            border-left: 4px solid var(--primary-color);
+            padding: 10px 12px;
+            font-size: 13.5px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 13.5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:disabled {
+            background-color: #88a0b8;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .success-box {
+            background-color: #e8f8f5;
+            border: 1px solid #2ecc71;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+
+        .no-spt {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d35400;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px dashed #d35400;
+            text-align: center;
+            margin: 12px 0;
+            word-break: break-all;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .card { box-shadow: none; max-width: 100%; margin: 0; }
+            button, .form-group, .user-badge, .header-title p { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- HALAMAN LOGIN NIP -->
+    <!-- HALAMAN LOGIN -->
     <div id="loginSection" class="card">
         <div class="header-title">
             <h2>SADATI SEKRETARIAT DPRD</h2>
             <p>Sistem Alokasi Digital Penomoran Otomatis</p>
         </div>
         <div class="form-group">
-            <label>NIP Staf / Pegawai</label>
+            <label for="loginNip">NIP Staf / Pegawai</label>
             <input type="text" id="loginNip" placeholder="Masukkan NIP Anda">
         </div>
         <div class="form-group">
-            <label>Password</label>
+            <label for="loginPass">Password</label>
             <input type="password" id="loginPass" placeholder="Masukkan Password">
         </div>
         <button onclick="prosesLogin()" id="btnLogin">Masuk Aplikasi</button>
     </div>
 
-    <!-- FORM INPUT SPT SEKRETARIAT -->
+    <!-- FORM INPUT SPT -->
     <div id="appSection" class="card hidden">
         <div class="header-title">
             <h2>Penomoran SPT Sekretariat</h2>
             <p>Sekretariat DPRD Kabupaten Padang Pariaman</p>
         </div>
-        
-        <div class="user-info">
-            Petugas: <b id="userNama"></b> (<span id="userNip"></span>)
+
+        <div class="user-badge">
+            Petugas: <b id="userNama">-</b> (<span id="userNip">-</span>)
         </div>
-        
+
         <div class="form-group">
-            <label>Tanggal SPT / Tanggal Berangkat</label>
+            <label for="sptTanggal">Tanggal Berangkat / Tanggal SPT</label>
             <input type="date" id="sptTanggal">
         </div>
         <div class="form-group">
-            <label>Maksud Perjalanan Dinas / Agenda</label>
+            <label for="sptMaksud">Maksud Perjalanan Dinas / Agenda</label>
             <textarea id="sptMaksud" rows="3" placeholder="Contoh: Mengikuti Bimbingan Teknis Tata Naskah Dinas..."></textarea>
         </div>
         <div class="form-group">
-            <label>Tujuan Perjalanan Dinas</label>
-            <input type="text" id="sptTujuan" placeholder="Contoh: BPKP Perwakilan Prov. Sumbar / Kota Padang">
+            <label for="sptTujuan">Tujuan Perjalanan Dinas</label>
+            <input type="text" id="sptTujuan" placeholder="Contoh: Kota Padang / BPKP Perwakilan Prov. Sumbar">
         </div>
         <button onclick="buatNomorSPT()" id="btnGenerate">Generate Nomor SPT Resmi</button>
 
-        <!-- HASIL PENOMORAN RESMI -->
+        <!-- HASIL REGISTRASI -->
         <div id="hasilBox" class="success-box hidden">
-            <h3 style="margin-top:0; color:#27ae60; text-align:center;">Nomor Berhasil Diregistrasi!</h3>
-            <p style="margin-bottom:2px; font-size:13px; text-align:center;">Nomor Surat Perintah Tugas Resmi:</p>
+            <h3 style="margin: 0; color: #27ae60; text-align: center; font-size: 16px;">Nomor Berhasil Diregistrasi!</h3>
+            <p style="margin: 6px 0 0; font-size: 13px; text-align: center;">Nomor Surat Perintah Tugas Resmi:</p>
             <div class="no-spt" id="resNoSPT"></div>
-            <p style="font-size:13px; margin:5px 0;"><b>Waktu Input:</b> <span id="resWaktu"></span></p>
+            <p style="font-size: 13px; margin: 5px 0;"><b>Waktu Input:</b> <span id="resWaktu">-</span></p>
             <br>
-            <button onclick="window.print()" style="background:#27ae60;">🖨️ Cetak Bukti Penomoran (A4)</button>
+            <button onclick="window.print()" style="background-color: #27ae60;">🖨️ Cetak Bukti Penomoran (A4)</button>
         </div>
     </div>
 
     <script>
-        // TEMPELKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby10NOtNauJqMF_XyZVihDZPQn-UGa-1shicEQwDKCNbjEeFr4D7YZtkuLQQbDMMQbI/exec"; 
+        // MASUKKAN URL WEB APP APPS SCRIPT ANDA DI SINI
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby10NOtNauJqMF_XyZVihDZPQn-UGa-1shicEQwDKCNbjEeFr4D7YZtkuLQQbDMMQbI/exec";
 
         let userAktif = {};
 
         function prosesLogin() {
-            let nip = document.getElementById("loginNip").value;
-            let pass = document.getElementById("loginPass").value;
+            const nip = document.getElementById("loginNip").value.trim();
+            const pass = document.getElementById("loginPass").value.trim();
+            const btnLogin = document.getElementById("btnLogin");
 
-            if(!nip || !pass) return alert("Silakan isi NIP dan Password!");
+            if (!nip || !pass) {
+                alert("Silakan isi NIP dan Password!");
+                return;
+            }
 
-            document.getElementById("btnLogin").innerText = "Memverifikasi...";
+            btnLogin.disabled = true;
+            btnLogin.innerText = "Memverifikasi...";
+
+            const formData = new URLSearchParams();
+            formData.append("action", "login");
+            formData.append("nip", nip);
+            formData.append("password", pass);
 
             fetch(SCRIPT_URL, {
                 method: "POST",
-                body: JSON.stringify({ action: "login", nip: nip, password: pass })
+                body: formData
             })
             .then(res => res.json())
             .then(data => {
-                document.getElementById("btnLogin").innerText = "Masuk Aplikasi";
-                if(data.status === "success") {
+                btnLogin.disabled = false;
+                btnLogin.innerText = "Masuk Aplikasi";
+
+                if (data.status === "success") {
                     userAktif = { nip: nip, nama: data.nama };
                     document.getElementById("userNama").innerText = data.nama;
                     document.getElementById("userNip").innerText = nip;
                     document.getElementById("loginSection").classList.add("hidden");
                     document.getElementById("appSection").classList.remove("hidden");
                 } else {
-                    alert(data.message);
+                    alert(data.message || "Login Gagal!");
                 }
             })
             .catch(err => {
-                document.getElementById("btnLogin").innerText = "Masuk Aplikasi";
-                alert("Gagal terhubung ke database. Periksa jaringan Anda.");
+                btnLogin.disabled = false;
+                btnLogin.innerText = "Masuk Aplikasi";
+                console.error("Error:", err);
+                alert("Gagal terhubung ke database. Periksa koneksi internet atau setelan deployment Apps Script.");
             });
         }
 
         function buatNomorSPT() {
-            let tgl = document.getElementById("sptTanggal").value;
-            let maksud = document.getElementById("sptMaksud").value;
-            let tujuan = document.getElementById("sptTujuan").value;
+            const tgl = document.getElementById("sptTanggal").value;
+            const maksud = document.getElementById("sptMaksud").value.trim();
+            const tujuan = document.getElementById("sptTujuan").value.trim();
+            const btnGenerate = document.getElementById("btnGenerate");
 
-            if(!tgl || !maksud || !tujuan) return alert("Harap lengkapi semua Isian!");
+            if (!tgl || !maksud || !tujuan) {
+                alert("Harap lengkapi seluruh isian formulir!");
+                return;
+            }
 
-            document.getElementById("btnGenerate").innerText = "Memproses Nomor...";
+            btnGenerate.disabled = true;
+            btnGenerate.innerText = "Memproses Nomor...";
+
+            const formData = new URLSearchParams();
+            formData.append("action", "createSPT");
+            formData.append("tanggalSPT", tgl);
+            formData.append("maksudDinas", maksud);
+            formData.append("tujuan", tujuan);
+            formData.append("nipPembuat", userAktif.nip);
+            formData.append("namaPembuat", userAktif.nama);
 
             fetch(SCRIPT_URL, {
                 method: "POST",
-                body: JSON.stringify({
-                    action: "createSPT",
-                    tanggalSPT: tgl,
-                    maksudDinas: maksud,
-                    tujuan: tujuan,
-                    nipPembuat: userAktif.nip,
-                    namaPembuat: userAktif.nama
-                })
+                body: formData
             })
             .then(res => res.json())
             .then(data => {
-                document.getElementById("btnGenerate").innerText = "Generate Nomor SPT Resmi";
-                if(data.status === "success") {
+                btnGenerate.disabled = false;
+                btnGenerate.innerText = "Generate Nomor SPT Resmi";
+
+                if (data.status === "success") {
                     document.getElementById("resNoSPT").innerText = data.noSPT;
                     document.getElementById("resWaktu").innerText = data.waktu;
                     document.getElementById("hasilBox").classList.remove("hidden");
+                } else {
+                    alert("Gagal memproses nomor: " + data.message);
                 }
             })
             .catch(err => {
-                document.getElementById("btnGenerate").innerText = "Generate Nomor SPT Resmi";
-                alert("Terjadi kesalahan sistem saat mengambil nomor.");
+                btnGenerate.disabled = false;
+                btnGenerate.innerText = "Generate Nomor SPT Resmi";
+                console.error("Error:", err);
+                alert("Terjadi kesalahan sistem saat menghubungi database.");
             });
         }
     </script>
