@@ -3,75 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIDATI - Penomoran SPT & SPPD Sekretariat DPRD</title>
+  <title>SIDATI - Bukti Penomoran Otomatis SPT & SPPD</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .card-container { max-width: 650px; margin: 40px auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); padding: 30px; }
+    .card-container { max-width: 650px; margin: 30px auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 30px; }
     .header-title { color: #0b3c5d; font-weight: 700; text-transform: uppercase; }
     .btn-primary-custom { background-color: #0b3c5d; border-color: #0b3c5d; color: #fff; font-weight: 600; padding: 12px; }
     .btn-primary-custom:hover { background-color: #072a42; color: #fff; }
-    .menu-card { border: 2px solid #e9ecef; border-radius: 10px; padding: 25px; transition: 0.3s; cursor: pointer; background: #fff; }
-    .menu-card:hover { border-color: #0b3c5d; background-color: #f8f9fa; transform: translateY(-3px); }
-    .nomor-box { font-size: 1.3rem; font-weight: 700; color: #155724; border: 2px dashed #28a745; padding: 10px; border-radius: 6px; background: #fff; margin: 10px 0; }
+    .nomor-box { font-size: 1.4rem; font-weight: 700; color: #155724; border: 2px dashed #28a745; padding: 12px; border-radius: 6px; background: #f8f9fa; margin: 15px 0; text-align: center; }
+
+    /* CSS STYLING KHUSUS CETAK BUKTI PENOMORAN */
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 15mm; font-family: 'Times New Roman', Times, serif; }
+      .no-print { display: none !important; }
+    }
+    
+    .bukti-header { text-align: center; border-bottom: 3px double #000; padding-bottom: 8px; margin-bottom: 20px; }
+    .bukti-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    .bukti-table td { padding: 8px 10px; vertical-align: top; font-size: 11pt; border-bottom: 1px solid #ddd; }
+    .bukti-table td.label { font-weight: bold; width: 35%; background-color: #f9f9f9; }
   </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container no-print">
   
-  <!-- ================= 1. HALAMAN LOGIN ================= -->
+  <!-- ================= 1. LOGIN ================= -->
   <div id="loginCard" class="card-container">
     <div class="text-center mb-4">
       <h4 class="header-title mb-1">Login SIDATI</h4>
       <p class="text-muted small">Sekretariat DPRD Kabupaten Padang Pariaman</p>
       <hr>
     </div>
-    <div id="loginAlert" class="alert alert-danger d-none" role="alert"></div>
+    <div id="loginAlert" class="alert alert-danger d-none"></div>
     <form id="loginForm">
       <div class="mb-3">
-        <label for="loginNip" class="form-label fw-bold">NIP Pegawai</label>
+        <label class="form-label fw-bold">NIP Pegawai</label>
         <input type="text" id="loginNip" class="form-control" placeholder="Masukkan 18 digit NIP..." required>
       </div>
       <div class="mb-3">
-        <label for="loginPassword" class="form-label fw-bold">Password</label>
+        <label class="form-label fw-bold">Password</label>
         <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password..." required>
       </div>
       <button type="submit" id="btnLogin" class="btn btn-primary-custom w-100 mt-2">Masuk Aplikasi</button>
     </form>
   </div>
 
-  <!-- ================= 2. DASHBOARD MENU UTAMA ================= -->
+  <!-- ================= 2. DASHBOARD ================= -->
   <div id="dashboardCard" class="card-container d-none">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div>
-        <h5 class="header-title mb-0">Dashboard SIDATI</h5>
+        <h5 class="header-title mb-0">Dashboard Penomoran</h5>
         <small class="text-muted" id="userGreeting"></small>
       </div>
       <button onclick="logout()" class="btn btn-outline-danger btn-sm fw-bold">Logout</button>
     </div>
     <hr>
-    <p class="fw-bold text-center text-secondary mb-4">Silakan Pilih Layanan Penomoran:</p>
-    
-    <div class="row g-3">
-      <div class="col-md-6">
-        <div class="menu-card text-center shadow-sm" onclick="bukaForm('spt')">
-          <div class="fs-1">📄</div>
-          <h6 class="fw-bold mt-2 mb-1">Penomoran SPT</h6>
-          <small class="text-muted">Surat Perintah Tugas</small>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="menu-card text-center shadow-sm" onclick="bukaForm('sppd')">
-          <div class="fs-1">🚘</div>
-          <h6 class="fw-bold mt-2 mb-1">Penomoran SPPD</h6>
-          <small class="text-muted">Umum & Sekretariat</small>
-        </div>
-      </div>
+    <div class="d-grid gap-3">
+      <button onclick="bukaForm('spt')" class="btn btn-outline-primary btn-lg p-3 text-start fw-bold">📄 Penomoran SPT Sekretariat</button>
+      <button onclick="bukaForm('sppd')" class="btn btn-outline-success btn-lg p-3 text-start fw-bold">🚘 Penomoran SPPD Sekretariat</button>
     </div>
   </div>
 
-  <!-- ================= 3. FORM PENOMORAN SPT ================= -->
+  <!-- ================= 3. FORM SPT ================= -->
   <div id="sptCard" class="card-container d-none">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h5 class="header-title mb-0">Penomoran SPT</h5>
@@ -95,7 +92,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold">Maksud Perjalanan Dinas</label>
-        <textarea id="sptMaksud" class="form-control" rows="3" placeholder="Masukkan agenda kegiatan..." required></textarea>
+        <textarea id="sptMaksud" class="form-control" rows="2" placeholder="Masukkan agenda kegiatan..." required></textarea>
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold">Tujuan Perjalanan</label>
@@ -103,38 +100,28 @@
       </div>
       <button type="submit" id="btnSubmitSpt" class="btn btn-primary-custom w-100">Generate Nomor SPT</button>
     </form>
-    <div id="sptResult" class="text-center d-none mt-4 p-3 bg-light border rounded">
-      <h6 class="text-success fw-bold mb-1">Nomor SPT Berhasil Diregistrasi!</h6>
+    
+    <div id="sptResult" class="d-none mt-4 border-top pt-3">
       <div id="sptNomorDisplay" class="nomor-box"></div>
+      <button onclick="cetakBukti('SPT')" class="btn btn-success fw-bold w-100">🖨️ Cetak Bukti Penomoran SPT</button>
     </div>
   </div>
 
-  <!-- ================= 4. FORM PENOMORAN SPPD ================= -->
+  <!-- ================= 4. FORM SPPD (SEKRETARIAT) ================= -->
   <div id="sppdCard" class="card-container d-none">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="header-title mb-0">Penomoran SPPD</h5>
+      <h5 class="header-title mb-0">Penomoran SPPD Sekretariat</h5>
       <button onclick="kembaliKeDashboard()" class="btn btn-secondary btn-sm">⬅️ Kembali</button>
     </div>
     <hr>
     <form id="sppdForm">
-      <div class="mb-3">
-        <label class="form-label fw-bold">Kategori / Tab SPPD</label>
-        <select id="sppdKategori" class="form-select">
-          <option value="umum">SPPD Umum (Tab: Data_SPPD)</option>
-          <option value="sekretariat">SPPD Sekretariat (Tab: SPPD_sekretariat)</option>
-        </select>
-      </div>
       <div class="mb-3">
         <label class="form-label fw-bold">Petugas / Pelaksana</label>
         <input type="text" id="sppdPetugas" class="form-control bg-light" readonly>
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold">Nomor SPT Referensi</label>
-        <input type="text" id="sppdNoSpt" class="form-control" placeholder="Contoh: 800.1.11.1/1/SET-DPRD/2026" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label fw-bold">Alat Angkut yang Digunakan</label>
-        <input type="text" id="sppdAngkut" class="form-control" placeholder="Contoh: Kendaraan Dinas / Umum" required>
+        <input type="text" id="sppdNoSpt" class="form-control" placeholder="Contoh: 800.1.11.1/12/SET-DPRD/2026" required>
       </div>
       <div class="row g-3 mb-3">
         <div class="col-md-6">
@@ -146,35 +133,108 @@
           <input type="text" id="sppdTujuan" class="form-control" placeholder="Contoh: Padang" required>
         </div>
       </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Alat Transportasi</label>
+        <input type="text" id="sppdAngkut" class="form-control" value="Kendaraan Dinas Operasional" required>
+      </div>
       <button type="submit" id="btnSubmitSppd" class="btn btn-primary-custom w-100">Generate Nomor SPPD</button>
     </form>
-    <div id="sppdResult" class="text-center d-none mt-4 p-3 bg-light border rounded">
-      <h6 class="text-success fw-bold mb-1">Nomor SPPD Berhasil Diregistrasi!</h6>
-      <small class="text-muted" id="sppdTargetInfo"></small>
+
+    <div id="sppdResult" class="d-none mt-4 border-top pt-3">
       <div id="sppdNomorDisplay" class="nomor-box"></div>
+      <button onclick="cetakBukti('SPPD')" class="btn btn-success fw-bold w-100">🖨️ Cetak Bukti Penomoran SPPD</button>
     </div>
   </div>
 
 </div>
 
+<!-- ================= TEMPLATE STRUK BUKTI CETAK PENOMORAN (A4 / PRINTER) ================= -->
+<div id="printArea" class="d-none">
+  <div class="bukti-header">
+    <h3 style="margin:0; font-size:13pt; font-weight:bold;">PEMERINTAH KABUPATEN PADANG PARIAMAN</h3>
+    <h2 style="margin:0; font-size:15pt; font-weight:bold;">SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH</h2>
+    <p style="margin:2px 0 0 0; font-size:9.5pt; font-style:italic;">Jln. Raya Padang - Bukittinggi Km 42 Kawasan Ibu Kota Kabupaten Parit Malintang</p>
+  </div>
+
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h4 id="printJudulBukti" style="margin:0; font-size:13pt; font-weight:bold; text-decoration:underline;">BUKTI REGISTRASI PENOMORAN</h4>
+    <p style="margin:4px 0 0 0; font-size:10pt; color:#555;">Sistem Informasi Database & Penomoran Otomatis (SIDATI)</p>
+  </div>
+
+  <table class="bukti-table">
+    <tr>
+      <td class="label">Jenis Dokumen</td>
+      <td id="printJenisDokumen">-</td>
+    </tr>
+    <tr>
+      <td class="label">Nomor Registrasi Resmi</td>
+      <td><strong id="printNomorResmi" style="font-size:12pt;">-</strong></td>
+    </tr>
+    <tr>
+      <td class="label">Waktu Registrasi</td>
+      <td id="printWaktuRegistrasi">-</td>
+    </tr>
+    <tr>
+      <td class="label">Nama / NIP Petugas</td>
+      <td id="printPetugas">-</td>
+    </tr>
+    <tr id="rowSptRef" class="d-none">
+      <td class="label">Dasar / Referensi SPT</td>
+      <td id="printNoSptRef">-</td>
+    </tr>
+    <tr id="rowMaksud">
+      <td class="label">Maksud Perjalanan Dinas</td>
+      <td id="printMaksud">-</td>
+    </tr>
+    <tr>
+      <td class="label">Tempat Tujuan</td>
+      <td id="printTujuan">-</td>
+    </tr>
+    <tr id="rowTanggalDinas">
+      <td class="label">Tanggal Pelaksanaan</td>
+      <td id="printTanggalDinas">-</td>
+    </tr>
+    <tr id="rowAngkut" class="d-none">
+      <td class="label">Alat Transportasi</td>
+      <td id="printAngkut">-</td>
+    </tr>
+    <tr>
+      <td class="label">Database Penyimpanan</td>
+      <td id="printTabPenyimpanan">-</td>
+    </tr>
+  </table>
+
+  <table style="width:100%; margin-top:40px; font-size:11pt;">
+    <tr>
+      <td style="width:60%;">
+        <p style="font-size:9pt; font-style:italic; color:#444;">
+          * Lembar ini adalah bukti sah bahwa nomor dokumen telah tercatat secara resmi pada sistem database Sekretariat DPRD.
+        </p>
+      </td>
+      <td style="width:40%; text-align:center;">
+        Parit Malintang, <span id="printTglCetak"></span><br>
+        Petugas Registrasi / Operator,<br><br><br><br>
+        <strong id="printNamaOperator"></strong>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <script>
-  // Ganti URL ini dengan URL Web App Google Apps Script Anda
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby10NOtNauJqMF_XyZVihDZPQn-UGa-1shicEQwDKCNbjEeFr4D7YZtkuLQQbDMMQbI/exec";
   let currentUser = null;
+  let currentRecord = {};
 
-  // Tanggal default hari ini
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('sptTglBerangkat').value = today;
   document.getElementById('sptTglKembali').value = today;
 
-  // --- PROSES LOGIN ---
+  // LOGIN
   document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('btnLogin');
     const alertBox = document.getElementById('loginAlert');
     btn.disabled = true;
-    btn.innerText = "Memverifikasi...";
-    alertBox.classList.add('d-none');
 
     fetch(SCRIPT_URL, {
       method: 'POST',
@@ -187,27 +247,18 @@
     .then(res => res.json())
     .then(data => {
       btn.disabled = false;
-      btn.innerText = "Masuk Aplikasi";
-
       if(data.status === 'success') {
         currentUser = data;
         document.getElementById('loginCard').classList.add('d-none');
         document.getElementById('dashboardCard').classList.remove('d-none');
         document.getElementById('userGreeting').innerText = `${data.nama} (${data.nip})`;
       } else {
-        alertBox.innerText = data.message || "NIP atau Password salah!";
+        alertBox.innerText = data.message || "Login Gagal!";
         alertBox.classList.remove('d-none');
       }
-    })
-    .catch(err => {
-      btn.disabled = false;
-      btn.innerText = "Masuk Aplikasi";
-      alertBox.innerText = "Gagal terhubung ke server.";
-      alertBox.classList.remove('d-none');
     });
   });
 
-  // --- NAVIGASI ---
   function bukaForm(jenis) {
     document.getElementById('dashboardCard').classList.add('d-none');
     if(jenis === 'spt') {
@@ -231,15 +282,13 @@
     currentUser = null;
     document.getElementById('dashboardCard').classList.add('d-none');
     document.getElementById('loginCard').classList.remove('d-none');
-    document.getElementById('loginForm').reset();
   }
 
-  // --- SUBMIT SPT ---
+  // GENERATE SPT
   document.getElementById('sptForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('btnSubmitSpt');
     btn.disabled = true;
-    btn.innerText = "Memproses...";
 
     const payload = {
       action: 'generateSPT',
@@ -254,44 +303,78 @@
     .then(res => res.json())
     .then(data => {
       btn.disabled = false;
-      btn.innerText = "Generate Nomor SPT";
       if(data.status === 'success') {
+        currentRecord = { ...payload, nomor: data.nomor, waktu: data.waktu, jenis: 'SPT', sheet: 'Data_SPT' };
         document.getElementById('sptNomorDisplay').innerText = data.nomor;
         document.getElementById('sptResult').classList.remove('d-none');
       }
     });
   });
 
-  // --- SUBMIT SPPD ---
+  // GENERATE SPPD (SEKRETARIAT)
   document.getElementById('sppdForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('btnSubmitSppd');
     btn.disabled = true;
-    btn.innerText = "Memproses...";
 
-    const kategori = document.getElementById('sppdKategori').value;
     const payload = {
       action: 'generateSPPD',
-      kategori: kategori,
       petugas: document.getElementById('sppdPetugas').value,
       noSpt: document.getElementById('sppdNoSpt').value,
-      angkut: document.getElementById('sppdAngkut').value,
       berangkat: document.getElementById('sppdBerangkat').value,
-      tujuan: document.getElementById('sppdTujuan').value
+      tujuan: document.getElementById('sppdTujuan').value,
+      angkut: document.getElementById('sppdAngkut').value
     };
 
     fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
     .then(res => res.json())
     .then(data => {
       btn.disabled = false;
-      btn.innerText = "Generate Nomor SPPD";
       if(data.status === 'success') {
+        currentRecord = { ...payload, nomor: data.nomor, waktu: data.waktu, jenis: 'SPPD', sheet: 'SPPD_sekretariat' };
         document.getElementById('sppdNomorDisplay').innerText = data.nomor;
-        document.getElementById('sppdTargetInfo').innerText = `Tersimpan otomatis ke tab: ${data.sheetTujuan}`;
         document.getElementById('sppdResult').classList.remove('d-none');
       }
     });
   });
+
+  // FUNSI PRINT BUKTI PENOMORAN
+  function cetakBukti(jenis) {
+    document.getElementById('printJenisDokumen').innerText = `Surat Perintah ${jenis === 'SPT' ? 'Tugas (SPT)' : 'Perjalanan Dinas (SPPD Sekretariat)'}`;
+    document.getElementById('printJudulBukti').innerText = `BUKTI REGISTRASI PENOMORAN ${jenis}`;
+    document.getElementById('printNomorResmi').innerText = currentRecord.nomor;
+    document.getElementById('printWaktuRegistrasi').innerText = currentRecord.waktu;
+    document.getElementById('printPetugas').innerText = currentRecord.petugas;
+    document.getElementById('printTujuan').innerText = currentRecord.tujuan;
+    document.getElementById('printTabPenyimpanan').innerText = currentRecord.sheet;
+    document.getElementById('printNamaOperator').innerText = currentUser.nama;
+
+    const d = new Date();
+    document.getElementById('printTglCetak').innerText = `${d.getDate()} ${['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][d.getMonth()]} ${d.getFullYear()}`;
+
+    if(jenis === 'SPT') {
+      document.getElementById('rowSptRef').classList.add('d-none');
+      document.getElementById('rowAngkut').classList.add('d-none');
+      document.getElementById('rowMaksud').classList.remove('d-none');
+      document.getElementById('rowTanggalDinas').classList.remove('d-none');
+      
+      document.getElementById('printMaksud').innerText = currentRecord.maksud;
+      document.getElementById('printTanggalDinas').innerText = `${currentRecord.tglBerangkat} s/d ${currentRecord.tglKembali}`;
+    } else {
+      document.getElementById('rowSptRef').classList.remove('d-none');
+      document.getElementById('rowAngkut').classList.remove('d-none');
+      document.getElementById('rowMaksud').classList.add('d-none');
+      document.getElementById('rowTanggalDinas').classList.add('d-none');
+
+      document.getElementById('printNoSptRef').innerText = currentRecord.noSpt;
+      document.getElementById('printAngkut').innerText = currentRecord.angkut;
+    }
+
+    const printArea = document.getElementById('printArea');
+    printArea.classList.remove('d-none');
+    window.print();
+    printArea.classList.add('d-none');
+  }
 </script>
 
 </body>
