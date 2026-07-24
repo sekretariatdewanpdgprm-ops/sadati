@@ -153,7 +153,6 @@
   <div class="bukti-header">
     <h3 style="margin:0; font-size:13pt; font-weight:bold;">PEMERINTAH KABUPATEN PADANG PARIAMAN</h3>
     <h2 style="margin:0; font-size:15pt; font-weight:bold;">SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH</h2>
-    <!-- ALAMAT DIPERBARUI -->
     <p style="margin:2px 0 0 0; font-size:9.5pt; font-style:italic;">Jl. Mohd. Syafei No. 8 Kampung Perak Pariaman</p>
   </div>
 
@@ -213,7 +212,7 @@
         </p>
       </td>
       <td style="width:40%; text-align:center;">
-        Parit Malintang, <span id="printTglCetak"></span><br>
+        Pariaman, <span id="printTglCetak"></span><br>
         Petugas Registrasi / Operator,<br><br><br><br>
         <strong id="printNamaOperator"></strong>
       </td>
@@ -222,7 +221,9 @@
 </div>
 
 <script>
+  // URL Deployment Apps Script Resmi milik Anda
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby10NOtNauJqMF_XyZVihDZPQn-UGa-1shicEQwDKCNbjEeFr4D7YZtkuLQQbDMMQbI/exec";
+  
   let currentUser = null;
   let currentRecord = {};
 
@@ -257,6 +258,11 @@
         alertBox.innerText = data.message || "Login Gagal!";
         alertBox.classList.remove('d-none');
       }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      alertBox.innerText = "Terjadi kesalahan koneksi sistem.";
+      alertBox.classList.remove('d-none');
     });
   });
 
@@ -379,4 +385,4 @@
 </script>
 
 </body>
-</html>
+</html>f
