@@ -194,6 +194,11 @@
       <td class="label">Tanggal Pelaksanaan</td>
       <td id="printTanggalDinas">-</td>
     </tr>
+    <!-- PENAMBAHAN BARIS LAMA DINAS (HARI) -->
+    <tr id="rowLamaDinas">
+      <td class="label">Lama Perjalanan Dinas</td>
+      <td id="printLamaDinas">-</td>
+    </tr>
     <tr id="rowAngkut" class="d-none">
       <td class="label">Alat Transportasi</td>
       <td id="printAngkut">-</td>
@@ -221,7 +226,6 @@
 </div>
 
 <script>
-  // URL Deployment Apps Script Terbaru
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWwWLd5l5jnSfG-hgd1G7t5JNo44_D5ZeNMx2FphIqXnWzPDhxxyETQ-E1L-OAwHYl/exec";
   
   let currentUser = null;
@@ -364,14 +368,25 @@
       document.getElementById('rowAngkut').classList.add('d-none');
       document.getElementById('rowMaksud').classList.remove('d-none');
       document.getElementById('rowTanggalDinas').classList.remove('d-none');
+      document.getElementById('rowLamaDinas').classList.remove('d-none');
       
       document.getElementById('printMaksud').innerText = currentRecord.maksud;
       document.getElementById('printTanggalDinas').innerText = `${currentRecord.tglBerangkat} s/d ${currentRecord.tglKembali}`;
+
+      // HITUNG SELISIH HARI (LAMA DINAS)
+      const tglAwal = new Date(currentRecord.tglBerangkat);
+      const tglAkhir = new Date(currentRecord.tglKembali);
+      const selisihWaktu = tglAkhir.getTime() - tglAwal.getTime();
+      const selisihHari = Math.ceil(selisihWaktu / (1000 * 3600 * 24)) + 1; // +1 Hari inklusif
+      
+      document.getElementById('printLamaDinas').innerText = `${selisihHari} (${terbilang(selisihHari)}) Hari`;
+
     } else {
       document.getElementById('rowSptRef').classList.remove('d-none');
       document.getElementById('rowAngkut').classList.remove('d-none');
       document.getElementById('rowMaksud').classList.add('d-none');
       document.getElementById('rowTanggalDinas').classList.add('d-none');
+      document.getElementById('rowLamaDinas').classList.add('d-none');
 
       document.getElementById('printNoSptRef').innerText = currentRecord.noSpt;
       document.getElementById('printAngkut').innerText = currentRecord.angkut;
@@ -381,6 +396,15 @@
     printArea.classList.remove('d-none');
     window.print();
     printArea.classList.add('d-none');
+  }
+
+  // FUNGSI CONVERT ANGKA KE TERBILANG SINGKAT
+  function terbilang(angka) {
+    const kata = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+    if (angka <= 11) return kata[angka];
+    if (angka < 20) return kata[angka - 10] + " Belas";
+    if (angka < 100) return kata[Math.floor(angka / 10)] + " Puluh " + kata[angka % 10];
+    return angka;
   }
 </script>
 
