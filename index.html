@@ -311,7 +311,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwihCEqF4EKl_ghOmtHAm7g-66TWvK7wTZn8E7mn4GqyBTLX1J979zfMrx5aNGPUaKK/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWwWLd5l5jnSfG-hgd1G7t5JNo44_D5ZeNMx2FphIqXnWzPDhxxyETQ-E1L-OAwHYl/exec";
   
   let currentUser = null;
   let currentRecord = {};
@@ -386,7 +386,7 @@
     });
   }
 
-  // FUNGSI FORMAT TANGGAL
+  // FUNGSI FORMAT TANGGAL INDONESIA
   function formatTanggalIndo(val) {
     if (!val) return '-';
     if (typeof val === 'string' && val.includes('-')) {
@@ -400,7 +400,7 @@
     return val;
   }
 
-  // RENDER TABEL SPT DENGAN INDEKS KOLOM GOOGLE SHEETS
+  // RENDER TABEL SPT SUI DENGAN INDEKS KOLOM GOOGLE SHEETS
   function renderTabelSpt(data) {
     const tbody = document.getElementById('tableBodySpt');
     if(!data || data.length === 0) {
@@ -511,7 +511,7 @@
     });
   });
 
-  // FUNGSI PRINT BUKTI
+  // FUNGSI PRINT BUKTI DENGAN QR CODE MENGARAH KE URL APLIKASI WEB SIDATI
   function cetakBukti(jenis) {
     document.getElementById('printJenisDokumen').innerText = `Surat Perintah ${jenis === 'SPT' ? 'Tugas (SPT)' : 'Perjalanan Dinas (SPPD Sekretariat)'}`;
     document.getElementById('printJudulBukti').innerText = `BUKTI REGISTRASI PENOMORAN ${jenis}`;
@@ -522,7 +522,9 @@
     document.getElementById('printTabPenyimpanan').innerText = currentRecord.sheet;
     document.getElementById('printNamaOperator').innerText = currentUser.nama;
 
-    const qrData = encodeURIComponent("https://sekretariatdewanpdgprm-ops.github.io/sadati/");
+    // QR CODE LANGSUNG MENUNJU KE ALAMAT APLIKASI WEB
+    const webUrl = "https://sekretariatdewanpdgprm-ops.github.io/sadati/";
+    const qrData = encodeURIComponent(webUrl);
     document.getElementById('printQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}`;
 
     const d = new Date();
