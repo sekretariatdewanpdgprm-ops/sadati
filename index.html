@@ -8,14 +8,13 @@
   <style>
     body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .card-container { max-width: 650px; margin: 30px auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 30px; }
+    .card-container-lg { max-width: 980px; margin: 30px auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 30px; }
     .header-title { color: #0b3c5d; font-weight: 700; text-transform: uppercase; }
     .btn-primary-custom { background-color: #0b3c5d; border-color: #0b3c5d; color: #fff; font-weight: 600; padding: 12px; }
     .btn-primary-custom:hover { background-color: #072a42; color: #fff; }
     .nomor-box { font-size: 1.4rem; font-weight: 700; color: #0b3c5d; border: 2px dashed #0b3c5d; padding: 12px; border-radius: 6px; background: #f0f4f8; margin: 15px 0; text-align: center; }
 
-    /* ==========================================
-       CSS STYLING DESAIN KHUSUS CETAK BUKTI 
-       ========================================== */
+    /* CSS STYLING CETAK BUKTI */
     @media print {
       body * { visibility: hidden; }
       #printArea, #printArea * { visibility: visible; }
@@ -81,6 +80,9 @@
     <div class="d-grid gap-3">
       <button onclick="bukaForm('spt')" class="btn btn-outline-primary btn-lg p-3 text-start fw-bold">📄 Penomoran SPT Sekretariat</button>
       <button onclick="bukaForm('sppd')" class="btn btn-outline-success btn-lg p-3 text-start fw-bold">🚘 Penomoran SPPD Sekretariat</button>
+      
+      <!-- TOMBOL ARSIP DAN LAPORAN TERKUNCI DIBALIK DASHBOARD -->
+      <button onclick="bukaArsip()" class="btn btn-outline-dark btn-lg p-3 text-start fw-bold">📂 Arsip & Laporan Registrasi</button>
     </div>
   </div>
 
@@ -162,6 +164,68 @@
     </div>
   </div>
 
+  <!-- ================= 5. HALAMAN ARSIP & LAPORAN DATA ================= -->
+  <div id="arsipCard" class="card-container-lg d-none">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="header-title mb-0">📂 Laporan & Arsip Registrasi</h5>
+      <button onclick="kembaliKeDashboard()" class="btn btn-secondary btn-sm">⬅️ Kembali</button>
+    </div>
+    <hr>
+    
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active fw-bold" id="tab-spt" data-bs-toggle="pill" data-bs-target="#content-spt" type="button">Data SPT</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link fw-bold" id="tab-sppd" data-bs-toggle="pill" data-bs-target="#content-sppd" type="button">Data SPPD Sekretariat</button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="content-spt">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle small">
+            <thead class="table-dark">
+              <tr>
+                <th>No. Registrasi</th>
+                <th>Petugas</th>
+                <th>Tgl Berangkat</th>
+                <th>Tgl Kembali</th>
+                <th>Maksud Perjalanan</th>
+                <th>Tujuan</th>
+                <th>Waktu Input</th>
+              </tr>
+            </thead>
+            <tbody id="tableBodySpt">
+              <tr><td colspan="7" class="text-center py-3">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="tab-pane fade" id="content-sppd">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle small">
+            <thead class="table-dark">
+              <tr>
+                <th>No. SPPD</th>
+                <th>Petugas</th>
+                <th>No. SPT Ref</th>
+                <th>Berangkat</th>
+                <th>Tujuan</th>
+                <th>Transportasi</th>
+                <th>Waktu Input</th>
+              </tr>
+            </thead>
+            <tbody id="tableBodySppd">
+              <tr><td colspan="7" class="text-center py-3">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ================= TEMPLATE STRUK BUKTI CETAK ELEGAN ================= -->
@@ -224,14 +288,13 @@
     </tr>
   </table>
 
-  <!-- FOOTER & TANDA TANGAN / QR CODE -->
   <table style="width:100%; margin-top:35px; font-size:11pt;">
     <tr>
       <td style="width:55%; vertical-align:top; padding-right:15px;">
         <div class="footer-note">
           <strong>Catatan Pengesahan:</strong><br>
           • Lembar ini diterbitkan otomatis oleh sistem SIDATI dan merupakan bukti sah penomoran resmi pada Sekretariat DPRD Kabupaten Padang Pariaman.<br>
-          • QR Code di sebelah kanan memuat data verifikasi resmi registrasi dokumen ini.
+          • QR Code di sebelah kanan memuat tautan verifikasi resmi aplikasi SIDATI.
         </div>
       </td>
       <td style="width:45%; text-align:center; vertical-align:top;">
@@ -248,8 +311,10 @@
   </table>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWwWLd5l5jnSfG-hgd1G7t5JNo44_D5ZeNMx2FphIqXnWzPDhxxyETQ-E1L-OAwHYl/exec";
+  // URL GOOGLE APPS SCRIPT TERBARU
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwihCEqF4EKl_ghOmtHAm7g-66TWvK7wTZn8E7mn4GqyBTLX1J979zfMrx5aNGPUaKK/exec";
   
   let currentUser = null;
   let currentRecord = {};
@@ -286,7 +351,7 @@
         alertBox.classList.remove('d-none');
       }
     })
-    .catch(err => {
+    .catch(() => {
       btn.disabled = false;
       alertBox.innerText = "Terjadi kesalahan koneksi ke server.";
       alertBox.classList.remove('d-none');
@@ -304,9 +369,66 @@
     }
   }
 
+  function bukaArsip() {
+    document.getElementById('dashboardCard').classList.add('d-none');
+    document.getElementById('arsipCard').classList.remove('d-none');
+    
+    // MENGAMBIL DATA ARSIP VIA GOOGLE APPS SCRIPT
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'getArsip' })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res.status === 'success') {
+        renderTabelSpt(res.data.spt);
+        renderTabelSppd(res.data.sppd);
+      }
+    });
+  }
+
+  function renderTabelSpt(data) {
+    const tbody = document.getElementById('tableBodySpt');
+    if(!data || data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3">Belum ada data SPT.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.map(row => `
+      <tr>
+        <td><strong>${row[0] || '-'}</strong></td>
+        <td>${row[1] || '-'}</td>
+        <td>${row[2] ? new Date(row[2]).toLocaleDateString('id-ID') : '-'}</td>
+        <td>${row[3] ? new Date(row[3]).toLocaleDateString('id-ID') : '-'}</td>
+        <td>${row[4] || '-'}</td>
+        <td>${row[5] || '-'}</td>
+        <td>${row[6] || '-'}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderTabelSppd(data) {
+    const tbody = document.getElementById('tableBodySppd');
+    if(!data || data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3">Belum ada data SPPD.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.map(row => `
+      <tr>
+        <td><strong>${row[0] || '-'}</strong></td>
+        <td>${row[1] || '-'}</td>
+        <td>${row[2] || '-'}</td>
+        <td>${row[3] || '-'}</td>
+        <td>${row[4] || '-'}</td>
+        <td>${row[5] || '-'}</td>
+        <td>${row[6] || '-'}</td>
+      </tr>
+    `).join('');
+  }
+
   function kembaliKeDashboard() {
     document.getElementById('sptCard').classList.add('d-none');
     document.getElementById('sppdCard').classList.add('d-none');
+    document.getElementById('arsipCard').classList.add('d-none');
     document.getElementById('sptResult').classList.add('d-none');
     document.getElementById('sppdResult').classList.add('d-none');
     document.getElementById('dashboardCard').classList.remove('d-none');
@@ -372,7 +494,7 @@
     });
   });
 
-  // FUNGSI PRINT BUKTI PENOMORAN (DESAIN BARU)
+  // FUNGSI PRINT BUKTI (QR CODE MEMBUKA LINK APLIKASI UTAMA)
   function cetakBukti(jenis) {
     document.getElementById('printJenisDokumen').innerText = `Surat Perintah ${jenis === 'SPT' ? 'Tugas (SPT)' : 'Perjalanan Dinas (SPPD Sekretariat)'}`;
     document.getElementById('printJudulBukti').innerText = `BUKTI REGISTRASI PENOMORAN ${jenis}`;
@@ -383,8 +505,8 @@
     document.getElementById('printTabPenyimpanan').innerText = currentRecord.sheet;
     document.getElementById('printNamaOperator').innerText = currentUser.nama;
 
-    // GENERATE QR CODE VERIFIKASI DENGAN GOOGLE CHART API
-    const qrData = encodeURIComponent(`VALIDASI SIDATI - DPRD PADANG PARIAMAN\nNo: ${currentRecord.nomor}\nPetugas: ${currentUser.nama}\nWaktu: ${currentRecord.waktu}`);
+    // QR CODE DIARAHKAN KE WEB APLIKASI UTAMA UNTUK KEAMANAN
+    const qrData = encodeURIComponent("https://sekretariatdewanpdgprm-ops.github.io/sadati/");
     document.getElementById('printQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}`;
 
     const d = new Date();
@@ -400,7 +522,6 @@
       document.getElementById('printMaksud').innerText = currentRecord.maksud;
       document.getElementById('printTanggalDinas').innerText = `${currentRecord.tglBerangkat} s/d ${currentRecord.tglKembali}`;
 
-      // HITUNG SELISIH HARI (LAMA DINAS)
       const tglAwal = new Date(currentRecord.tglBerangkat);
       const tglAkhir = new Date(currentRecord.tglKembali);
       const selisihWaktu = tglAkhir.getTime() - tglAwal.getTime();
@@ -422,14 +543,12 @@
     const printArea = document.getElementById('printArea');
     printArea.classList.remove('d-none');
     
-    // DELAY SEDIKIT AGAR QR CODE SEMPAT TERLOAD TERLEBIH DAHULU
     setTimeout(() => {
       window.print();
       printArea.classList.add('d-none');
     }, 300);
   }
 
-  // FUNGSI CONVERT ANGKA KE TERBILANG
   function terbilang(angka) {
     const kata = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
     if (angka <= 11) return kata[angka];
