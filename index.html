@@ -14,11 +14,15 @@
     .btn-primary-custom:hover { background-color: #072a42; color: #fff; }
     .nomor-box { font-size: 1.4rem; font-weight: 700; color: #0b3c5d; border: 2px dashed #0b3c5d; padding: 12px; border-radius: 6px; background: #f0f4f8; margin: 15px 0; text-align: center; }
 
-    /* CSS STYLING CETAK BUKTI */
+    /* CSS STYLING CETAK BUKTI - HANYA AKTIF SAAT PRINT */
+    @media screen {
+      #printArea { display: none !important; }
+    }
+    
     @media print {
-      body * { visibility: hidden; }
-      #printArea, #printArea * { visibility: visible; }
-      #printArea { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 10mm 15mm; font-family: 'Times New Roman', Times, serif; color: #000; }
+      body { background-color: #fff; }
+      .container { display: none; }
+      #printArea { display: block !important; visibility: visible; position: static; width: 100%; margin: 0; padding: 10mm 15mm; font-family: 'Times New Roman', Times, serif; color: #000; }
       .no-print { display: none !important; }
     }
     
