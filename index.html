@@ -148,13 +148,12 @@
 
 </div>
 
-<!-- ================= TEMPLATE STRUK BUKTI CETAK PENOMORAN ================= -->
+<!-- ================= TEMPLATE STRUK BUKTI CETAK PENOMORAN (A4 / PRINTER) ================= -->
 <div id="printArea" class="d-none">
   <div class="bukti-header">
     <h3 style="margin:0; font-size:13pt; font-weight:bold;">PEMERINTAH KABUPATEN PADANG PARIAMAN</h3>
     <h2 style="margin:0; font-size:15pt; font-weight:bold;">SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH</h2>
-    <!-- ALAMAT DIPERBARUI -->
-    <p style="margin:2px 0 0 0; font-size:9.5pt; font-style:italic;">Jl. Mohd. Syafei No. 8 Kampung Perak Pariaman</p>
+    <p style="margin:2px 0 0 0; font-size:9.5pt; font-style:italic;">Jln. Raya Padang - Bukittinggi Km 42 Kawasan Ibu Kota Kabupaten Parit Malintang</p>
   </div>
 
   <div style="text-align: center; margin-bottom: 20px;">
@@ -339,7 +338,7 @@
     });
   });
 
-  // FUNGSI PRINT BUKTI PENOMORAN
+  // FUNSI PRINT BUKTI PENOMORAN
   function cetakBukti(jenis) {
     document.getElementById('printJenisDokumen').innerText = `Surat Perintah ${jenis === 'SPT' ? 'Tugas (SPT)' : 'Perjalanan Dinas (SPPD Sekretariat)'}`;
     document.getElementById('printJudulBukti').innerText = `BUKTI REGISTRASI PENOMORAN ${jenis}`;
