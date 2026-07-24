@@ -121,12 +121,12 @@
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold">Nomor SPT Referensi</label>
-        <input type="text" id="sppdNoSpt" class="form-control" placeholder="Contoh: 800.1.11.1/12/SET-DPRD/2026" required>
+        <input type="text" id="sppdNoSpt" class="form-control" placeholder="Contoh: 800.1.11.1/7/SET-DPRD/VII-2026" required>
       </div>
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label class="form-label fw-bold">Tempat Berangkat</label>
-          <input type="text" id="sppdBerangkat" class="form-control" value="Parit Malintang" required>
+          <input type="text" id="sppdBerangkat" class="form-control" value="Pariaman" required>
         </div>
         <div class="col-md-6">
           <label class="form-label fw-bold">Tempat Tujuan</label>
@@ -221,8 +221,8 @@
 </div>
 
 <script>
-  // URL Deployment Apps Script Resmi milik Anda
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY0gKadThgHPK2mLMZJIU1dyxN93jV1bZjXJtx04XDL45K9AI4rVcrCakBT6UP2GIO/exec";
+  // URL Deployment Apps Script Terbaru
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIwYba6MUpMV58-1guRXjtDoflBdLJTHEddGowKhsuGeYIzPGnOe_nHDgyW1w8Mzgj/exec";
   
   let currentUser = null;
   let currentRecord = {};
@@ -261,7 +261,7 @@
     })
     .catch(err => {
       btn.disabled = false;
-      alertBox.innerText = "Terjadi kesalahan koneksi sistem.";
+      alertBox.innerText = "Terjadi kesalahan koneksi ke server.";
       alertBox.classList.remove('d-none');
     });
   });
@@ -385,4 +385,4 @@
 </script>
 
 </body>
-</html>f
+</html>
