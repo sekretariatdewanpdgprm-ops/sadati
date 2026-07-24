@@ -383,6 +383,11 @@
         renderTabelSpt(res.data.spt);
         renderTabelSppd(res.data.sppd);
       }
+    })
+    .catch(err => {
+      console.error('Gagal memuat arsip:', err);
+      document.getElementById('tableBodySpt').innerHTML = `<tr><td colspan="7" class="text-center py-3 text-danger">Gagal memuat data.</td></tr>`;
+      document.getElementById('tableBodySppd').innerHTML = `<tr><td colspan="7" class="text-center py-3 text-danger">Gagal memuat data.</td></tr>`;
     });
   }
 
@@ -400,7 +405,7 @@
     return val;
   }
 
-  // RENDER TABEL SPT SUI DENGAN INDEKS KOLOM GOOGLE SHEETS
+  // RENDER TABEL SPT DENGAN INDEKS KOLOM GOOGLE SHEETS
   function renderTabelSpt(data) {
     const tbody = document.getElementById('tableBodySpt');
     if(!data || data.length === 0) {
@@ -455,6 +460,7 @@
     currentUser = null;
     document.getElementById('dashboardCard').classList.add('d-none');
     document.getElementById('loginCard').classList.remove('d-none');
+    document.getElementById('loginForm').reset();
   }
 
   // GENERATE SPT
@@ -481,6 +487,10 @@
         document.getElementById('sptNomorDisplay').innerText = data.nomor;
         document.getElementById('sptResult').classList.remove('d-none');
       }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      console.error('Error generate SPT:', err);
     });
   });
 
@@ -508,8 +518,15 @@
         document.getElementById('sppdNomorDisplay').innerText = data.nomor;
         document.getElementById('sppdResult').classList.remove('d-none');
       }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      console.error('Error generate SPPD:', err);
     });
   });
+
+  // ARRAY BULAN UNTUK FORMATTING TANGGAL
+  const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
   // FUNGSI PRINT BUKTI DENGAN QR CODE MENGARAH KE URL APLIKASI WEB SIDATI
   function cetakBukti(jenis) {
@@ -522,13 +539,14 @@
     document.getElementById('printTabPenyimpanan').innerText = currentRecord.sheet;
     document.getElementById('printNamaOperator').innerText = currentUser.nama;
 
-    // QR CODE LANGSUNG MENUNJU KE ALAMAT APLIKASI WEB
+    // QR CODE LANGSUNG MENUJU KE ALAMAT APLIKASI WEB
     const webUrl = "https://sekretariatdewanpdgprm-ops.github.io/sadati/";
     const qrData = encodeURIComponent(webUrl);
     document.getElementById('printQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}`;
 
+    // FORMAT TANGGAL CETAK
     const d = new Date();
-    document.getElementById('printTglCetak').innerText = `${d.getDate()} ${['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][d.getMonth()]} ${d.getFullYear()}`;
+    document.getElementById('printTglCetak').innerText = `${d.getDate()} ${BULAN[d.getMonth()]} ${d.getFullYear()}`;
 
     if(jenis === 'SPT') {
       document.getElementById('rowSptRef').classList.add('d-none');
@@ -572,7 +590,7 @@
     if (angka <= 11) return kata[angka];
     if (angka < 20) return kata[angka - 10] + " Belas";
     if (angka < 100) return kata[Math.floor(angka / 10)] + " Puluh " + kata[angka % 10];
-    return angka;
+    return angka.toString();
   }
 </script>
 
